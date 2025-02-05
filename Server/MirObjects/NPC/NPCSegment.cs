@@ -3163,7 +3163,7 @@ namespace Server.MirObjects
                         player.MyGuild.Gold -= (uint)Settings.ExtendGT;
                         player.MyGuild.SendServerPacket(new S.GuildStorageGoldChange() { Type = 2, Amount = (uint)Settings.ExtendGT });
 
-                        player.MyGuild.GTRent = player.MyGuild.GTRent.AddDays(Settings.GTDays);
+                        player.MyGuild.GTRent = player.MyGuild.GTRent.AddDays(Settings.ExtendGTDays);
                         GTmap.Price = 10000000;
                         break;
 
