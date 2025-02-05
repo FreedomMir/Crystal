@@ -6734,6 +6734,13 @@ namespace Server.MirObjects
                     return item;
             }
 
+            for (int i = 0; i < Info.Inventory.Length; i++)
+            {
+                UserItem item = Info.Inventory[i];
+                if (item != null && item.Info.Type == ItemType.Amulet && item.Info.Shape == shape && item.Count >= count)
+                    return item;
+            }
+
             return null;
         }
         protected UserItem GetPoison(int count, byte shape = 0)
