@@ -1855,6 +1855,8 @@ namespace Server.MirEnvir
 
             LoadConquests();
 
+            LoadGTInfo();
+
             _listener = new TcpListener(IPAddress.Parse(Settings.IPAddress), Settings.Port);
             _listener.Start();
             _listener.BeginAcceptTcpClient(Connection, null);
@@ -1869,11 +1871,28 @@ namespace Server.MirEnvir
             MessageQueue.Enqueue("Network Started.");
         }
 
+        private void LoadGTInfo()
+        {
+            foreach (var gt in GTMapList)
+            {
+                var Guild = GuildList.FirstOrDefault(x => x.GTIndex == gt.Index);
+                if (Guild != null)
+                {
+                    gt.Owner = Guild.Name;
+                    if (Guild.Ranks.Count > 0 && Guild.Ranks[0] != null && Guild.Ranks[0].Members.Count > 0 && Guild.Ranks[0].Members[0] != null)
+                        gt.Leader = Guild.Ranks[0].Members[0].Name;
+                    gt.Price = 0;
+                    gt.Days = (Now - Guild.GTRent).Days;
+                }
+            }
+        }
+
         private void StopEnvir()
         {
             SaveGoods(true);
 
             MapList.Clear();
+            GTMapList.Clear();
             StartPoints.Clear();
             StartItems.Clear();
             Objects.Clear();
